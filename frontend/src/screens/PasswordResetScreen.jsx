@@ -8,9 +8,8 @@ import { setCredentials } from '../slices/authSlice';
 import { toast } from 'react-toastify';
 import Loader from '../components/Loader';
 
-const LoginScreen = () => {
+const PasswordResetScreen = () => {
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -38,7 +37,7 @@ const LoginScreen = () => {
 
   return (
     <FormContainer>
-      <h1>Entrar no Sistema</h1>
+      <h1>Recuperar Senha</h1>
 
       <Form onSubmit={submitHandler}>
         <Form.Group className='my-2' controlId='email'>
@@ -51,38 +50,20 @@ const LoginScreen = () => {
           ></Form.Control>
         </Form.Group>
 
-        <Form.Group className='my-2' controlId='password'>
-          <Form.Label>Senha</Form.Label>
-          <Form.Control
-            type='password'
-            placeholder='Entre com sua senha'
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          ></Form.Control>
-        </Form.Group>
-
         <Button
           disabled={isLoading}
           type='submit'
           variant='primary'
           className='mt-3'
         >
-          Entrar
+          Recuperar
         </Button>
       </Form>
 
       {isLoading && <Loader />}
 
-      <Row className='py-3'>
-        <Col>
-          Novo Usuário? <Link to='/register'>Registrar</Link>
-        </Col>
-        <Col>
-          Esqueci minha Senha? <Link to='/passwordReset'>Recuperar</Link>
-        </Col>
-      </Row>
     </FormContainer>
   );
 };
 
-export default LoginScreen;
+export default PasswordResetScreen;

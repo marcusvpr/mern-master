@@ -28,7 +28,7 @@ const ProfileScreen = () => {
   const submitHandler = async (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
-      toast.error('Passwords do not match');
+      toast.error('Senhas não conferem');
     } else {
       try {
         const res = await updateProfile({
@@ -39,7 +39,7 @@ const ProfileScreen = () => {
         }).unwrap();
         console.log(res);
         dispatch(setCredentials(res));
-        toast.success('Profile updated successfully');
+        toast.success('Registro atualizado com successo');
       } catch (err) {
         toast.error(err?.data?.message || err.error);
       }
@@ -47,49 +47,49 @@ const ProfileScreen = () => {
   };
   return (
     <FormContainer>
-      <h1>Update Profile</h1>
+      <h1>Atualizar Perfil</h1>
 
       <Form onSubmit={submitHandler}>
         <Form.Group className='my-2' controlId='name'>
-          <Form.Label>Name</Form.Label>
+          <Form.Label>Nome</Form.Label>
           <Form.Control
             type='name'
-            placeholder='Enter name'
+            placeholder='Entre seu nome'
             value={name}
             onChange={(e) => setName(e.target.value)}
           ></Form.Control>
         </Form.Group>
         <Form.Group className='my-2' controlId='email'>
-          <Form.Label>Email Address</Form.Label>
+          <Form.Label>E-mail</Form.Label>
           <Form.Control
             type='email'
-            placeholder='Enter email'
+            placeholder='Enter com seu endereço de e-mail'
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           ></Form.Control>
         </Form.Group>
         <Form.Group className='my-2' controlId='password'>
-          <Form.Label>Password</Form.Label>
+          <Form.Label>Senha</Form.Label>
           <Form.Control
             type='password'
-            placeholder='Enter password'
+            placeholder='Entre com sua Senha'
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           ></Form.Control>
         </Form.Group>
 
         <Form.Group className='my-2' controlId='confirmPassword'>
-          <Form.Label>Confirm Password</Form.Label>
+          <Form.Label>Confirme Senha</Form.Label>
           <Form.Control
             type='password'
-            placeholder='Confirm password'
+            placeholder='Confirme sua Senha'
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
           ></Form.Control>
         </Form.Group>
 
         <Button type='submit' variant='primary' className='mt-3'>
-          Update
+          Atualizar
         </Button>
       </Form>
     </FormContainer>

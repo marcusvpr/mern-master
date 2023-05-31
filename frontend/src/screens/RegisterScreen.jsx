@@ -44,49 +44,49 @@ const RegisterScreen = () => {
   };
   return (
     <FormContainer>
-      <h1>Register</h1>
+      <h1>Registro</h1>
       <Form onSubmit={submitHandler}>
         <Form.Group className='my-2' controlId='name'>
-          <Form.Label>Name</Form.Label>
+          <Form.Label>Nome</Form.Label>
           <Form.Control
             type='name'
-            placeholder='Enter name'
+            placeholder='Entre seu Nome'
             value={name}
             onChange={(e) => setName(e.target.value)}
           ></Form.Control>
         </Form.Group>
 
         <Form.Group className='my-2' controlId='email'>
-          <Form.Label>Email Address</Form.Label>
+          <Form.Label>E-mail</Form.Label>
           <Form.Control
             type='email'
-            placeholder='Enter email'
+            placeholder='Entre seu E-mail'
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           ></Form.Control>
         </Form.Group>
 
         <Form.Group className='my-2' controlId='password'>
-          <Form.Label>Password</Form.Label>
+          <Form.Label>Senha</Form.Label>
           <Form.Control
             type='password'
-            placeholder='Enter password'
+            placeholder='Entre sua Senha'
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           ></Form.Control>
         </Form.Group>
         <Form.Group className='my-2' controlId='confirmPassword'>
-          <Form.Label>Confirm Password</Form.Label>
+          <Form.Label>Confirme a Senha</Form.Label>
           <Form.Control
             type='password'
-            placeholder='Confirm password'
+            placeholder='Confirme sua Senha'
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
           ></Form.Control>
         </Form.Group>
 
         <Button type='submit' variant='primary' className='mt-3'>
-          Register
+          Registrar
         </Button>
 
         {isLoading && <Loader />}
@@ -94,7 +94,7 @@ const RegisterScreen = () => {
 
       <Row className='py-3'>
         <Col>
-          Already have an account? <Link to={`/login`}>Login</Link>
+          Já possui uma conta? <Link to={`/login`}>Entrar</Link>
         </Col>
       </Row>
     </FormContainer>

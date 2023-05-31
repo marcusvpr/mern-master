@@ -1,5 +1,6 @@
-import { Navbar, Nav, Container, NavDropdown, Badge } from 'react-bootstrap';
-import { FaSignInAlt, FaSignOutAlt } from 'react-icons/fa';
+import { Navbar, Nav, NavItem, Container, NavDropdown, Badge } from 'react-bootstrap';
+import { FaSignInAlt, FaSignOutAlt, FaHome, FaExclamationCircle, FaPhoneSquare }
+   from 'react-icons/fa';
 import { LinkContainer } from 'react-router-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -29,33 +30,40 @@ const Header = () => {
       <Navbar bg='dark' variant='dark' expand='lg' collapseOnSelect>
         <Container>
           <LinkContainer to='/'>
-            <Navbar.Brand>MERN Auth</Navbar.Brand>
+            <Navbar.Brand>Controle Condomínio</Navbar.Brand>
           </LinkContainer>
           <Navbar.Toggle aria-controls='basic-navbar-nav' />
           <Navbar.Collapse id='basic-navbar-nav'>
             <Nav className='ms-auto'>
+
+              <LinkContainer to='/'>
+                <Nav.Link><FaHome /> Home</Nav.Link>
+              </LinkContainer>
+              <LinkContainer to='/about'>
+                <Nav.Link><FaExclamationCircle /> Sobre</Nav.Link>
+              </LinkContainer>
+              <LinkContainer to='/contact'>
+                <Nav.Link><FaPhoneSquare /> Contato</Nav.Link>
+              </LinkContainer>
+
               {userInfo ? (
                 <>
                   <NavDropdown title={userInfo.name} id='username'>
                     <LinkContainer to='/profile'>
-                      <NavDropdown.Item>Profile</NavDropdown.Item>
+                      <NavDropdown.Item>Perfil</NavDropdown.Item>
                     </LinkContainer>
                     <NavDropdown.Item onClick={logoutHandler}>
-                      Logout
+                      Sair
                     </NavDropdown.Item>
                   </NavDropdown>
                 </>
               ) : (
                 <>
                   <LinkContainer to='/login'>
-                    <Nav.Link>
-                      <FaSignInAlt /> Sign In
-                    </Nav.Link>
+                    <Nav.Link><FaSignInAlt /> Entrar</Nav.Link>
                   </LinkContainer>
                   <LinkContainer to='/register'>
-                    <Nav.Link>
-                      <FaSignOutAlt /> Sign Up
-                    </Nav.Link>
+                    <Nav.Link><FaSignOutAlt /> Registro</Nav.Link>
                   </LinkContainer>
                 </>
               )}
