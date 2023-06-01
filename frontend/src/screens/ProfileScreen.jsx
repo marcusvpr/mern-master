@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Form, Button } from 'react-bootstrap';
+import { FaUserEdit } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 import FormContainer from '../components/FormContainer';
 import { toast } from 'react-toastify';
@@ -27,6 +28,7 @@ const ProfileScreen = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
+    
     if (password !== confirmPassword) {
       toast.error('Senhas não conferem');
     } else {
@@ -37,7 +39,7 @@ const ProfileScreen = () => {
           email,
           password,
         }).unwrap();
-        console.log(res);
+        // console.log(res);
         dispatch(setCredentials(res));
         toast.success('Registro atualizado com successo');
       } catch (err) {
@@ -47,7 +49,9 @@ const ProfileScreen = () => {
   };
   return (
     <FormContainer>
-      <h1>Atualizar Perfil</h1>
+      <h2 className='text-center mb-4'>
+        <FaUserEdit /> Atualizar Perfil:
+      </h2>
 
       <Form onSubmit={submitHandler}>
         <Form.Group className='my-2' controlId='name'>
@@ -55,6 +59,7 @@ const ProfileScreen = () => {
           <Form.Control
             type='name'
             placeholder='Entre seu nome'
+            required
             value={name}
             onChange={(e) => setName(e.target.value)}
           ></Form.Control>
@@ -64,6 +69,7 @@ const ProfileScreen = () => {
           <Form.Control
             type='email'
             placeholder='Enter com seu endereço de e-mail'
+            required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           ></Form.Control>
@@ -73,6 +79,7 @@ const ProfileScreen = () => {
           <Form.Control
             type='password'
             placeholder='Entre com sua Senha'
+            required
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           ></Form.Control>
@@ -83,13 +90,14 @@ const ProfileScreen = () => {
           <Form.Control
             type='password'
             placeholder='Confirme sua Senha'
+            required
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
           ></Form.Control>
         </Form.Group>
 
         <Button type='submit' variant='primary' className='mt-3'>
-          Atualizar
+          <FaUserEdit /> Atualizar
         </Button>
       </Form>
     </FormContainer>

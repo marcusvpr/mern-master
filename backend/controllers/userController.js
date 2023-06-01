@@ -17,10 +17,11 @@ const authUser = asyncHandler(async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
+      role: user.role,
     });
   } else {
     res.status(401);
-    throw new Error('Invalid email or password');
+    throw new Error('Inválido e-mail ou senha');
   }
 });
 
@@ -28,19 +29,32 @@ const authUser = asyncHandler(async (req, res) => {
 // @route   POST /api/users
 // @access  Public
 const registerUser = asyncHandler(async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, role } = req.body;
 
   const userExists = await User.findOne({ email });
 
   if (userExists) {
     res.status(400);
-    throw new Error('User already exists');
+    throw new Error('Usuário já existe');
+  }
+
+  // Trata perfil ... (default = USER)
+  var userRole = '';
+  if (role == '' || !role) {
+    userRole = 'USER';
+  }
+  if (role == 'ADMIN' || role == 'USER') {
+    userRole = role;
+  } else {
+    res.status(400);
+    throw new Error('Perfil não existe! = {$role}');
   }
 
   const user = await User.create({
     name,
     email,
     password,
+    role,
   });
 
   if (user) {
@@ -50,10 +64,11 @@ const registerUser = asyncHandler(async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
+      role: user.role,
     });
   } else {
     res.status(400);
-    throw new Error('Invalid user data');
+    throw new Error('Inválido dados usuário');
   }
 });
 
@@ -65,7 +80,7 @@ const logoutUser = (req, res) => {
     httpOnly: true,
     expires: new Date(0),
   });
-  res.status(200).json({ message: 'Logged out successfully' });
+  res.status(200).json({ message: 'Sair realizada com sucesso' });
 };
 
 // @desc    Get user profile
@@ -79,10 +94,11 @@ const getUserProfile = asyncHandler(async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
+      role: user.role,
     });
   } else {
     res.status(404);
-    throw new Error('User not found');
+    throw new Error('Usuário não encontrado');
   }
 });
 
@@ -99,6 +115,9 @@ const updateUserProfile = asyncHandler(async (req, res) => {
     if (req.body.password) {
       user.password = req.body.password;
     }
+    if (req.body.role) {
+      user.role = req.body.role;
+    }
 
     const updatedUser = await user.save();
 
@@ -106,16 +125,36 @@ const updateUserProfile = asyncHandler(async (req, res) => {
       _id: updatedUser._id,
       name: updatedUser.name,
       email: updatedUser.email,
+      role: updatedUser.role,
     });
   } else {
     res.status(404);
-    throw new Error('User not found');
+    throw new Error('Usuário não encontrado');
   }
 });
+
+// @desc    Patch reset user password
+// @route   PATCH /api/users/profile
+// @access  Private
+const resetUserPassword= asyncHandler(async (req, res) => {
+  const { name, email, password, role } = req.body;
+
+  const userExists = await User.findOne({ email });
+
+  if (userExists) {
+    res.status(200).json({ message: 'Foi enviado um e-mail com as instruções '+
+                                     'para recuperação da sua Senha.'});
+  } else {
+    res.status(404);
+    throw new Error('E-mail não encontrado');
+  }
+});
+
 export {
   authUser,
   registerUser,
   logoutUser,
   getUserProfile,
   updateUserProfile,
+  resetUserPassword,
 };

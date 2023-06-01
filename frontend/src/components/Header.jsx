@@ -1,6 +1,6 @@
 import { Navbar, Nav, NavItem, Container, NavDropdown, Badge } from 'react-bootstrap';
-import { FaSignInAlt, FaSignOutAlt, FaHome, FaExclamationCircle, FaPhoneSquare }
-   from 'react-icons/fa';
+import { FaSignInAlt, FaSignOutAlt, FaHome, FaExclamationCircle, FaPhoneSquare,
+         FaUserCircle, FaUserEdit, FaKey} from 'react-icons/fa';
 import { LinkContainer } from 'react-router-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -25,12 +25,23 @@ const Header = () => {
     }
   };
 
+  var userDados = '';
+  if (userInfo) {
+    if (userInfo.name) {
+      userDados = userInfo.name;
+    };
+    if (userInfo.role) {
+      userDados = userDados + ` ( ${userInfo.role} )`;
+    };
+  };
+  const navDropdownTitle = (<><FaUserCircle/> Central do Cliente</>);
+
   return (
     <header>
       <Navbar bg='dark' variant='dark' expand='lg' collapseOnSelect>
         <Container>
           <LinkContainer to='/'>
-            <Navbar.Brand>Controle Condomínio</Navbar.Brand>
+            <Navbar.Brand>Controle de Condomínio</Navbar.Brand>
           </LinkContainer>
           <Navbar.Toggle aria-controls='basic-navbar-nav' />
           <Navbar.Collapse id='basic-navbar-nav'>
@@ -48,23 +59,32 @@ const Header = () => {
 
               {userInfo ? (
                 <>
-                  <NavDropdown title={userInfo.name} id='username'>
+                  <NavDropdown title={navDropdownTitle} id='username'>
+                    <LinkContainer to=''>
+                        <NavDropdown.Item>{userDados}</NavDropdown.Item>
+                    </LinkContainer>
+
                     <LinkContainer to='/profile'>
-                      <NavDropdown.Item>Perfil</NavDropdown.Item>
+                      <NavDropdown.Item><FaUserEdit />Perfil</NavDropdown.Item>
                     </LinkContainer>
                     <NavDropdown.Item onClick={logoutHandler}>
-                      Sair
+                     <FaSignOutAlt />Sair
                     </NavDropdown.Item>
                   </NavDropdown>
                 </>
               ) : (
                 <>
-                  <LinkContainer to='/login'>
-                    <Nav.Link><FaSignInAlt /> Entrar</Nav.Link>
-                  </LinkContainer>
-                  <LinkContainer to='/register'>
-                    <Nav.Link><FaSignOutAlt /> Registro</Nav.Link>
-                  </LinkContainer>
+                  <NavDropdown title={navDropdownTitle} id='usersite'>
+                    <LinkContainer to='/login'>
+                      <NavDropdown.Item><FaSignInAlt /> Entrar</NavDropdown.Item>
+                    </LinkContainer>
+                    <LinkContainer to='/register'>
+                      <NavDropdown.Item><FaSignOutAlt /> Registro</NavDropdown.Item>
+                    </LinkContainer>
+                    <LinkContainer to='/passwordReset'>
+                      <NavDropdown.Item><FaKey /> Recuperar Senha</NavDropdown.Item>
+                    </LinkContainer>
+                  </NavDropdown>
                 </>
               )}
             </Nav>

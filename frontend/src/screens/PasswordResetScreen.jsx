@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Form, Button, Row, Col } from 'react-bootstrap';
+import { FaKey } from 'react-icons/fa';
 import FormContainer from '../components/FormContainer';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLoginMutation } from '../slices/usersApiSlice';
+import { useResetUserPasswordMutation } from '../slices/usersApiSlice';
 import { setCredentials } from '../slices/authSlice';
 import { toast } from 'react-toastify';
 import Loader from '../components/Loader';
@@ -14,7 +15,7 @@ const PasswordResetScreen = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [login, { isLoading }] = useLoginMutation();
+  const [resetUserPassword, { isLoading }] = useResetUserPasswordMutation();
 
   const { userInfo } = useSelector((state) => state.auth);
 
@@ -27,9 +28,8 @@ const PasswordResetScreen = () => {
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
-      const res = await login({ email, password }).unwrap();
-      dispatch(setCredentials({ ...res }));
-      navigate('/');
+      const res = await resetUserPassword({ email }).unwrap();
+      toast.success(res.message);
     } catch (err) {
       toast.error(err?.data?.message || err.error);
     }
@@ -37,7 +37,9 @@ const PasswordResetScreen = () => {
 
   return (
     <FormContainer>
-      <h1>Recuperar Senha</h1>
+      <h2 className='text-center mb-4'>
+        <FaKey /> Recuperar Senha:
+      </h2>
 
       <Form onSubmit={submitHandler}>
         <Form.Group className='my-2' controlId='email'>
@@ -45,6 +47,7 @@ const PasswordResetScreen = () => {
           <Form.Control
             type='email'
             placeholder='Entre com seu e-mail'
+            required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           ></Form.Control>
@@ -56,7 +59,7 @@ const PasswordResetScreen = () => {
           variant='primary'
           className='mt-3'
         >
-          Recuperar
+          <FaKey /> Recuperar
         </Button>
       </Form>
 

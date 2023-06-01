@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Form, Button, Row, Col } from 'react-bootstrap';
+import { FaSignInAlt, FaSignOutAlt, FaKey } from 'react-icons/fa';
 import FormContainer from '../components/FormContainer';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLoginMutation } from '../slices/usersApiSlice';
@@ -38,24 +39,28 @@ const LoginScreen = () => {
 
   return (
     <FormContainer>
-      <h1>Entrar no Sistema</h1>
+      <h2 className='text-center mb-4'>
+        <FaSignInAlt /> Entrar no Sistema:
+      </h2>
 
       <Form onSubmit={submitHandler}>
         <Form.Group className='my-2' controlId='email'>
-          <Form.Label>E-mail</Form.Label>
+          <Form.Label>E-mail:</Form.Label>
           <Form.Control
             type='email'
             placeholder='Entre com seu e-mail'
+            required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           ></Form.Control>
         </Form.Group>
 
         <Form.Group className='my-2' controlId='password'>
-          <Form.Label>Senha</Form.Label>
+          <Form.Label>Senha:</Form.Label>
           <Form.Control
             type='password'
             placeholder='Entre com sua senha'
+            required
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           ></Form.Control>
@@ -67,7 +72,7 @@ const LoginScreen = () => {
           variant='primary'
           className='mt-3'
         >
-          Entrar
+          <FaSignInAlt /> Entrar
         </Button>
       </Form>
 
@@ -75,10 +80,10 @@ const LoginScreen = () => {
 
       <Row className='py-3'>
         <Col>
-          Novo Usuário? <Link to='/register'>Registrar</Link>
+          Novo Usuário? <FaSignOutAlt /><Link to='/register'> Registrar</Link>
         </Col>
         <Col>
-          Esqueci minha Senha? <Link to='/passwordReset'>Recuperar</Link>
+          Esqueci minha Senha? <FaKey /> <Link to='/passwordReset'> Recuperar</Link>
         </Col>
       </Row>
     </FormContainer>
