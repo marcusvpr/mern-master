@@ -1,6 +1,7 @@
 import { Navbar, Nav, NavItem, Container, NavDropdown, Badge } from 'react-bootstrap';
 import { FaSignInAlt, FaSignOutAlt, FaHome, FaExclamationCircle, FaPhoneSquare,
-         FaUserCircle, FaUserEdit, FaKey} from 'react-icons/fa';
+         FaUserCircle, FaUserEdit, FaKey, FaRegChartBar, FaUserCog, FaCogs} 
+         from 'react-icons/fa';
 import { LinkContainer } from 'react-router-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -25,6 +26,11 @@ const Header = () => {
     }
   };
 
+  var isAdmin = false;
+  if (userInfo && userInfo.role == 'ADMIN') {
+    isAdmin = true;
+  }
+
   var userDados = '';
   if (userInfo) {
     if (userInfo.name) {
@@ -46,7 +52,7 @@ const Header = () => {
           <Navbar.Toggle aria-controls='basic-navbar-nav' />
           <Navbar.Collapse id='basic-navbar-nav'>
             <Nav className='ms-auto'>
-
+ 
               <LinkContainer to='/'>
                 <Nav.Link><FaHome /> Home</Nav.Link>
               </LinkContainer>
@@ -59,11 +65,14 @@ const Header = () => {
 
               {userInfo ? (
                 <>
+                  <LinkContainer to='/dashboard'>
+                    <Nav.Link><FaRegChartBar /> Dashboard</Nav.Link>
+                  </LinkContainer>
+
                   <NavDropdown title={navDropdownTitle} id='username'>
                     <LinkContainer to=''>
                         <NavDropdown.Item>{userDados}</NavDropdown.Item>
                     </LinkContainer>
-
                     <LinkContainer to='/profile'>
                       <NavDropdown.Item><FaUserEdit />Perfil</NavDropdown.Item>
                     </LinkContainer>

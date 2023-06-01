@@ -1,5 +1,5 @@
 import { Container, Card, Button, Image, Row, Col } from 'react-bootstrap';
-import { FaHome, FaSignInAlt, FaSignOutAlt, FaUserEdit } from 'react-icons/fa';
+import { FaHome, FaSignInAlt, FaSignOutAlt} from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 
 const Home = () => {
@@ -25,10 +25,6 @@ const Home = () => {
           <div className='d-flex'>
             {userInfo ? (
               <>
-                <Button variant='secondary' href='/profile'>
-                  <FaUserEdit /> Perfil
-                </Button>
-                &nbsp;&nbsp;&nbsp;Usuário: {userInfo.name} ( {userInfo.role} )
               </>
             ) : (
               <>

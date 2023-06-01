@@ -22,7 +22,7 @@ const LoginScreen = () => {
 
   useEffect(() => {
     if (userInfo) {
-      navigate('/');
+      navigate('/dashboard');
     }
   }, [navigate, userInfo]);
 
@@ -31,7 +31,7 @@ const LoginScreen = () => {
     try {
       const res = await login({ email, password }).unwrap();
       dispatch(setCredentials({ ...res }));
-      navigate('/');
+      navigate('/dashboard');
     } catch (err) {
       toast.error(err?.data?.message || err.error);
     }

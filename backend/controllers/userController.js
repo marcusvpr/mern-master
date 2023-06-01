@@ -1,6 +1,8 @@
 import asyncHandler from 'express-async-handler';
 import User from '../models/userModel.js';
 import generateToken from '../utils/generateToken.js';
+import generator from 'generate-password';
+import sendEmailUtil from '../utils/sendEmailUtil.js';
 
 // @desc    Auth user & get token
 // @route   POST /api/users/auth
@@ -137,11 +139,26 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 // @route   PATCH /api/users/profile
 // @access  Private
 const resetUserPassword= asyncHandler(async (req, res) => {
-  const { name, email, password, role } = req.body;
+  const { email } = req.body;
 
-  const userExists = await User.findOne({ email });
+  const user = await User.findOne({ email });
 
-  if (userExists) {
+  if (user) {
+    // 'uEyMTw32v9'
+    var newPassword = generator.generate({
+      length: 10,
+      numbers: true
+    });
+    // 
+    user.password = newPassword;
+
+    const updatedUser = await user.save();
+    //
+    var textEmail = '<h2>Controle Condomínio:</h2>' +
+                    '<h4>Nova Senha gerada: ' + newPassword + '</h4>';
+
+    sendEmailUtil(res, email, 'Recuperação de Senha', textEmail);
+
     res.status(200).json({ message: 'Foi enviado um e-mail com as instruções '+
                                      'para recuperação da sua Senha.'});
   } else {
