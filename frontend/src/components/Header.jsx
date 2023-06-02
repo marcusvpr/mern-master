@@ -1,7 +1,5 @@
 import { Navbar, Nav, NavItem, Container, NavDropdown, Badge } from 'react-bootstrap';
-import { FaSignInAlt, FaSignOutAlt, FaHome, FaExclamationCircle, FaPhoneSquare,
-         FaUserCircle, FaUserEdit, FaKey, FaRegChartBar, FaUserCog, FaCogs} 
-         from 'react-icons/fa';
+
 import { LinkContainer} from 'react-router-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -45,11 +43,12 @@ const Header = () => {
     };
   };
 
-  const start = <Link to="/">
-                  <img alt="logo" src="https://primefaces.org/cdn/primereact/images/logo.png"
-                       height="40" className="mr-2">
-                  </img>
-                </Link>;
+  const start = <div><Link to="/">
+                  <img alt="logo" src="/pombal_logo.png"
+                       height="50" className="mr-2">
+                  </img> 
+                </Link> <b>Controle de Condomínio&nbsp;&nbsp;&nbsp;&nbsp;</b></div>;
+
   const end = <InputText placeholder="Busca" type="text" className="w-full" />;
 
   var item = [];
@@ -121,14 +120,14 @@ const Header = () => {
             },
             {
               label: 'Criar sua Conta',
-              icon: 'pi pi-fw pi-user-plus',
+              icon: 'pi pi-fw pi-sign-out',
               command: (e) => {
                 navigate('/register');
               }
             },
             {
               label: 'Recuperar Senha',
-              icon: 'pi pi-fw pi-eye',
+              icon: 'pi pi-fw pi-key',
               command: (e) => {
                 navigate('/passwordReset');
               }

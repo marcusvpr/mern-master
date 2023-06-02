@@ -49,7 +49,7 @@ const ProfileScreen = () => {
   };
   return (
     <FormContainer>
-      <h2 className='text-center mb-4'>
+      <h2 classname='text-center mb-4'>
         <FaUserEdit /> Atualizar Perfil:
       </h2>
 
@@ -57,7 +57,7 @@ const ProfileScreen = () => {
         <Form.Group className='my-2' controlId='name'>
           <Form.Label>Nome</Form.Label>
           <Form.Control
-            type='name'
+            type='text'
             placeholder='Entre seu nome'
             required
             value={name}

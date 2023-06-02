@@ -9,20 +9,23 @@ const Home = () => {
     <div className=' py-5'>
       <Container className='d-flex justify-content-center'>
         <Card className='p-5 d-flex flex-column align-items-center hero-card bg-light w-75'>
-          <h2 className='text-center mb-4'>
+          <h2 classname='text-center mb-4'>
             <FaHome /> Controle de Condomínio:
           </h2>
 
           <Row>
             <Col>
-              <Image style={{width:'50vh'}} src="/central-de-portaria.png" fluid />
+              <Image style={{width:'40vh'}} src="/pombal_logo.png" fluid />
+            </Col>
+            <Col>
+              <Image style={{width:'40vh'}} src="/central-de-portaria.png" fluid />
             </Col>
           </Row>
 
-          <p className='text-center mb-4'>
+          <p classname='text-center mb-4'>
             Utilize nosso sistema de Controle de Condomínios. Sinta-se em casa!
           </p>
-          <div className='d-flex'>
+          <div classname='d-flex'>
             {userInfo ? (
               <>
               </>
@@ -32,7 +35,7 @@ const Home = () => {
                   <FaSignInAlt /> Entrar
                 </Button>
                 <Button variant='secondary' href='/register'>
-                  <FaSignOutAlt /> Registrar
+                  <FaSignOutAlt /> Criar Conta
                 </Button>
               </>
             )}

@@ -39,7 +39,7 @@ const LoginScreen = () => {
 
   return (
     <FormContainer>
-      <h2 className='text-center mb-4'>
+      <h2 classname='text-center mb-4'>
         <FaSignInAlt /> Entrar no Sistema:
       </h2>
 
@@ -80,7 +80,7 @@ const LoginScreen = () => {
 
       <Row className='py-3'>
         <Col>
-          Novo Usuário? <FaSignOutAlt /><Link to='/register'> Registrar</Link>
+          Novo Usuário? <FaSignOutAlt /> <Link to='/register'> Criar Conta</Link>
         </Col>
         <Col>
           Esqueci minha Senha? <FaKey /> <Link to='/passwordReset'> Recuperar</Link>

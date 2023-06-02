@@ -1,14 +1,17 @@
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
 
 import { Container, Card} from 'react-bootstrap';
 import { FaRegChartBar } from 'react-icons/fa';
-import { useSelector } from 'react-redux';
 
 import { Dialog } from 'primereact/dialog';
 import { Button } from 'primereact/button';
 import { Chart } from 'primereact/chart';
 
 const DashboardScreen = () => {
+  const { userInfo } = useSelector((state) => state.auth);
+  const [state, setState] = useState(false);
+
   const data = {
     labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
     datasets: [
@@ -27,22 +30,20 @@ const DashboardScreen = () => {
     ]
   };
 
-  const { userInfo } = useSelector((state) => state.auth);
-  const [state, setState] = useState(false);
-
   return (
-    <div className=' py-5'>
+    <div classname=' py-5'>
       <Container className='d-flex justify-content-center'>
         <Card className='p-5 d-flex flex-column align-items-center hero-card bg-light w-75'>
-          <h2 className='text-center mb-4'>
+          <h2 classname='text-center mb-4'>
             <FaRegChartBar /> Dashboard:
           </h2>
 
-          <div className="card flex justify-content-center">
+          <div classname="card flex justify-content-center">
             <Chart type="line" data={data} />
           </div>
 
-          <Dialog visible={state} onHide={() => setState(false)}>
+          <Dialog header="Informações do usuário:" visible={state} 
+            onHide={() => setState(false)}>
             <p className='text-center mb-4'>
               Usuário Logado: {userInfo.name} ( {userInfo.role} )
             </p>
@@ -51,9 +52,9 @@ const DashboardScreen = () => {
             </p>
           </Dialog>
 
-          <div className="card flex justify-content-center">
+          <div classname="card flex justify-content-center">
             <p> </p>
-            <Button label="Info Usuário" onClick={() => setState(true)} />
+            <Button label="Informações do Usuário" onClick={() => setState(true)} />
           </div>
 
         </Card>

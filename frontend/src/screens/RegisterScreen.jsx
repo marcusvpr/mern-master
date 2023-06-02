@@ -1,10 +1,13 @@
 import { useState, useEffect } from 'react';
-import { Form, Button, Row, Col } from 'react-bootstrap';
-import { FaSignInAlt, FaSignOutAlt } from 'react-icons/fa';
-import FormContainer from '../components/FormContainer';
-import Loader from '../components/Loader';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+
+import { Form, Button, Row, Col } from 'react-bootstrap';
+import { FaSignInAlt, FaSignOutAlt } from 'react-icons/fa';
+
+import FormContainer from '../components/FormContainer';
+import Loader from '../components/Loader';
+
 import { useRegisterMutation } from '../slices/usersApiSlice';
 import { setCredentials } from '../slices/authSlice';
 import { toast } from 'react-toastify';
@@ -33,7 +36,7 @@ const RegisterScreen = () => {
     e.preventDefault();
 
     if (password !== confirmPassword) {
-      toast.error('Passwords do not match');
+      toast.error('Senhas não conferem');
     } else {
       try {
         const res = await register({ name, email, password, role }).unwrap();
@@ -44,17 +47,18 @@ const RegisterScreen = () => {
       }
     }
   };
+
   return (
     <FormContainer>
-      <h2 className='text-center mb-4'>
-        <FaSignOutAlt /> Registro:
+      <h2 classname='text-center mb-4'>
+        <FaSignOutAlt /> Criar Conta:
       </h2>
 
       <Form onSubmit={submitHandler}>
         <Form.Group className='my-2' controlId='name'>
           <Form.Label>Nome:</Form.Label>
           <Form.Control
-            type='name'
+            type='text'
             placeholder='Entre seu Nome'
             required
             value={name}
@@ -95,7 +99,7 @@ const RegisterScreen = () => {
         </Form.Group>
 
         <Button type='submit' variant='primary' className='mt-3'>
-          <FaSignOutAlt /> Registrar
+          <FaSignOutAlt /> Criar
         </Button>
 
         {isLoading && <Loader />}
