@@ -2,11 +2,15 @@ import { Navbar, Nav, NavItem, Container, NavDropdown, Badge } from 'react-boots
 import { FaSignInAlt, FaSignOutAlt, FaHome, FaExclamationCircle, FaPhoneSquare,
          FaUserCircle, FaUserEdit, FaKey, FaRegChartBar, FaUserCog, FaCogs} 
          from 'react-icons/fa';
-import { LinkContainer } from 'react-router-bootstrap';
+import { LinkContainer} from 'react-router-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useLogoutMutation } from '../slices/usersApiSlice';
 import { logout } from '../slices/authSlice';
+
+import { Link } from "react-router-dom"
+import { Menubar } from 'primereact/menubar';
+import { InputText } from 'primereact/inputtext';
 
 const Header = () => {
   const { userInfo } = useSelector((state) => state.auth);
@@ -40,66 +44,103 @@ const Header = () => {
       userDados = userDados + ` ( ${userInfo.role} )`;
     };
   };
-  const navDropdownTitle = (<><FaUserCircle/> Central do Cliente</>);
+
+  const start = <Link to="/">
+                  <img alt="logo" src="https://primefaces.org/cdn/primereact/images/logo.png"
+                       height="40" className="mr-2">
+                  </img>
+                </Link>;
+  const end = <InputText placeholder="Busca" type="text" className="w-full" />;
+
+  var item = [];
+  var items = [
+    {
+      label: 'Home',
+      icon: 'pi pi-fw pi-home',
+      command: (e) => {
+        navigate('/');
+      }
+    },
+    {
+      label: 'Sobre',
+      icon: 'pi pi-fw pi-info-circle',
+      command: (e) => {
+        navigate('/about');
+      }
+    },
+    {
+      label: 'Contato',
+      icon: 'pi pi-fw pi-phone',
+      command: (e) => {
+        navigate('/contact');
+      }
+    },
+  ];
+
+  if (userInfo) {
+    item = [{
+      label: 'DashBoard',
+      icon: 'pi pi-fw pi-desktop',
+      command: (e) => {
+        navigate('/dashboard');
+      }
+    }];
+    items = [...items, ...item];
+
+    item = [{
+      label: 'Central do Cliente',
+      icon: 'pi pi-fw pi-cog',
+      items: [{
+        label: 'Perfil',
+        icon: 'pi pi-fw pi-user',
+        command: (e) => {
+          navigate('/profile');
+        }
+      },
+      {
+        label: 'Sair do Sistema',
+        icon: 'pi pi-fw pi-power-off',
+        command: (e) => {
+          logoutHandler();
+        }
+      }]
+    }];
+    items = [...items, ...item];
+  } else {
+    item = [
+      {  
+        label: 'Central do Cliente',
+        icon: 'pi pi-fw pi-cog',
+        items: [
+            {
+              label: 'Entrar no Sistema',
+              icon: 'pi pi-fw pi-sign-in',
+              command: (e) => {
+                navigate('/login');
+              }
+            },
+            {
+              label: 'Criar sua Conta',
+              icon: 'pi pi-fw pi-user-plus',
+              command: (e) => {
+                navigate('/register');
+              }
+            },
+            {
+              label: 'Recuperar Senha',
+              icon: 'pi pi-fw pi-eye',
+              command: (e) => {
+                navigate('/passwordReset');
+              }
+            },
+        ]
+      }];
+      items = [...items, ...item];
+    };
 
   return (
     <header>
-      <Navbar bg='dark' variant='dark' expand='lg' collapseOnSelect>
-        <Container>
-          <LinkContainer to='/'>
-            <Navbar.Brand>Controle de Condomínio</Navbar.Brand>
-          </LinkContainer>
-          <Navbar.Toggle aria-controls='basic-navbar-nav' />
-          <Navbar.Collapse id='basic-navbar-nav'>
-            <Nav className='ms-auto'>
- 
-              <LinkContainer to='/'>
-                <Nav.Link><FaHome /> Home</Nav.Link>
-              </LinkContainer>
-              <LinkContainer to='/about'>
-                <Nav.Link><FaExclamationCircle /> Sobre</Nav.Link>
-              </LinkContainer>
-              <LinkContainer to='/contact'>
-                <Nav.Link><FaPhoneSquare /> Contato</Nav.Link>
-              </LinkContainer>
-
-              {userInfo ? (
-                <>
-                  <LinkContainer to='/dashboard'>
-                    <Nav.Link><FaRegChartBar /> Dashboard</Nav.Link>
-                  </LinkContainer>
-
-                  <NavDropdown title={navDropdownTitle} id='username'>
-                    <LinkContainer to=''>
-                        <NavDropdown.Item>{userDados}</NavDropdown.Item>
-                    </LinkContainer>
-                    <LinkContainer to='/profile'>
-                      <NavDropdown.Item><FaUserEdit />Perfil</NavDropdown.Item>
-                    </LinkContainer>
-                    <NavDropdown.Item onClick={logoutHandler}>
-                     <FaSignOutAlt />Sair
-                    </NavDropdown.Item>
-                  </NavDropdown>
-                </>
-              ) : (
-                <>
-                  <NavDropdown title={navDropdownTitle} id='usersite'>
-                    <LinkContainer to='/login'>
-                      <NavDropdown.Item><FaSignInAlt /> Entrar</NavDropdown.Item>
-                    </LinkContainer>
-                    <LinkContainer to='/register'>
-                      <NavDropdown.Item><FaSignOutAlt /> Registro</NavDropdown.Item>
-                    </LinkContainer>
-                    <LinkContainer to='/passwordReset'>
-                      <NavDropdown.Item><FaKey /> Recuperar Senha</NavDropdown.Item>
-                    </LinkContainer>
-                  </NavDropdown>
-                </>
-              )}
-            </Nav>
-          </Navbar.Collapse>
-        </Container>
-      </Navbar>
+      <Menubar model={items} start={start} end={end} />
     </header>
   );
 };
