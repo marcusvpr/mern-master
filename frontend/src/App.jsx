@@ -13,7 +13,7 @@ import "primeicons/primeicons.css";
 const App = () => {
 
   return (
-    <main classname="App">
+    <main className="App">
       <Header />
       <ToastContainer />
       <Container className='my-2'>

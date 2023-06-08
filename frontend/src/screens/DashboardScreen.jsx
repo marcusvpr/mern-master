@@ -31,14 +31,14 @@ const DashboardScreen = () => {
   };
 
   return (
-    <div classname=' py-5'>
+    <div className=' py-5'>
       <Container className='d-flex justify-content-center'>
         <Card className='p-5 d-flex flex-column align-items-center hero-card bg-light w-75'>
-          <h2 classname='text-center mb-4'>
+          <h2 className='text-center mb-4'>
             <FaRegChartBar /> Dashboard:
           </h2>
 
-          <div classname="card flex justify-content-center">
+          <div className="card flex justify-content-center">
             <Chart type="line" data={data} />
           </div>
 
@@ -52,7 +52,7 @@ const DashboardScreen = () => {
             </p>
           </Dialog>
 
-          <div classname="card flex justify-content-center">
+          <div className="card flex justify-content-center">
             <p> </p>
             <Button label="Informações do Usuário" onClick={() => setState(true)} />
           </div>

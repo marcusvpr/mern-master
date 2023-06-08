@@ -5,7 +5,9 @@ import { FaUserEdit } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 import FormContainer from '../components/FormContainer';
 import { toast } from 'react-toastify';
+
 import Loader from '../components/Loader';
+
 import { useUpdateUserMutation } from '../slices/usersApiSlice';
 import { setCredentials } from '../slices/authSlice';
 
@@ -16,7 +18,6 @@ const ProfileScreen = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
 
   const dispatch = useDispatch();
-
   const { userInfo } = useSelector((state) => state.auth);
 
   const [updateProfile, { isLoading }] = useUpdateUserMutation();
@@ -47,6 +48,7 @@ const ProfileScreen = () => {
       }
     }
   };
+
   return (
     <FormContainer>
       <h2 classname='text-center mb-4'>
@@ -99,6 +101,8 @@ const ProfileScreen = () => {
         <Button type='submit' variant='primary' className='mt-3'>
           <FaUserEdit /> Atualizar
         </Button>
+
+        {isLoading && <Loader />}
       </Form>
     </FormContainer>
   );

@@ -9,7 +9,7 @@ const Home = () => {
     <div className=' py-5'>
       <Container className='d-flex justify-content-center'>
         <Card className='p-5 d-flex flex-column align-items-center hero-card bg-light w-75'>
-          <h2 classname='text-center mb-4'>
+          <h2 className='text-center mb-4'>
             <FaHome /> Controle de Condomínio:
           </h2>
 
@@ -22,10 +22,10 @@ const Home = () => {
             </Col>
           </Row>
 
-          <p classname='text-center mb-4'>
+          <p className='text-center mb-4'>
             Utilize nosso sistema de Controle de Condomínios. Sinta-se em casa!
           </p>
-          <div classname='d-flex'>
+          <div className='d-flex'>
             {userInfo ? (
               <>
               </>

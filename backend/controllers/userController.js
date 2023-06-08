@@ -85,6 +85,19 @@ const logoutUser = (req, res) => {
   res.status(200).json({ message: 'Sair realizada com sucesso' });
 };
 
+// @desc    Get all users
+// @route   GET /api/users
+// @access  Private/Admin
+const getUsers = asyncHandler(async (req, res) => {
+  const users = await User.find({}).select('-password').sort({ email: 1 })
+  if (users) {
+    res.json(users)
+  } else {
+    res.status(404);
+    throw new Error('Não existem Usuários');
+  }
+});
+
 // @desc    Get user profile
 // @route   GET /api/users/profile
 // @access  Private
@@ -171,6 +184,7 @@ export {
   authUser,
   registerUser,
   logoutUser,
+  getUsers,
   getUserProfile,
   updateUserProfile,
   resetUserPassword,

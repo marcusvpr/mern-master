@@ -3,6 +3,7 @@ import {
   authUser,
   registerUser,
   logoutUser,
+  getUsers,
   getUserProfile,
   updateUserProfile,
   resetUserPassword,
@@ -14,6 +15,9 @@ const router = express.Router();
 router.post('/', registerUser);
 router.post('/auth', authUser);
 router.post('/logout', logoutUser);
+
+router.route('/').get(protect, getUsers);
+
 router
   .route('/profile')
   .get(protect, getUserProfile)

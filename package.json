@@ -2,7 +2,7 @@
   "name": "mern-app-condominio",
   "version": "1.0.0",
   "type": "module",
-  "description": "MERN controle condominio",
+  "description": "MERN Controle de Condomínio",
   "main": "server.js",
   "scripts": {
     "start": "node backend/server.js",

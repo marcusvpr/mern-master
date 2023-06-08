@@ -49,7 +49,10 @@ const Header = () => {
                   </img> 
                 </Link> <b>Controle de Condomínio&nbsp;&nbsp;&nbsp;&nbsp;</b></div>;
 
-  const end = <InputText placeholder="Busca" type="text" className="w-full" />;
+  const end =  <span className="p-input-icon-left w-full md:w-auto">
+                  <i className="pi pi-search" />
+                  <InputText type="search" onInput={(e) => setGlobalFilter(e.currentTarget.value)} placeholder="Busca..." className="w-full lg:w-auto" />
+                </span>
 
   var item = [];
   var items = [
@@ -85,6 +88,17 @@ const Header = () => {
       }
     }];
     items = [...items, ...item];
+
+    if (isAdmin) {
+      item = [{
+        label: 'Usuários',
+        icon: 'pi pi-fw pi-users',
+        command: (e) => {
+          navigate('/users');
+        }
+      }];
+      items = [...items, ...item];
+    }
 
     item = [{
       label: 'Central do Cliente',
