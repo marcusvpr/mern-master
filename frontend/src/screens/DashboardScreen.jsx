@@ -48,7 +48,7 @@ const DashboardScreen = () => {
               Usuário Logado: {userInfo.name} ( {userInfo.role} )
             </p>
             <p className='text-center mb-4'>
-              Último acesso: 01.06.2023 às 19:27:00 
+              Último acesso: {userInfo.lastAccess.substring(20)}
             </p>
           </Dialog>
 

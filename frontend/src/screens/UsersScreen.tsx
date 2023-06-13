@@ -28,10 +28,12 @@ const UsersScreen = () => {
     const [queryUsers, { isLoading }] = useQueryUsersMutation();
 
     let emptyUser: User = {
-        id: '',
+        _id: '',
         email: '',
         name: '',
-        role: '',
+        role: 'USER',
+        indStatus: '',
+        lastAccess: '',
     };
 
     const [users, setUsers] = useState<User[]>([]);
@@ -94,14 +96,14 @@ const UsersScreen = () => {
         if (user.name?.trim()) {
             let _users = [...users];
             let _user = {...user};
-            if (user.id) {
-                const index = findIndexById(user.id);
+            if (user._id) {
+                const index = findIndexById(user._id);
 
                 _users[index] = _user;
                 toast.success('Usuário Alterado');
             }
             else {
-                _user.id = createId();
+                _user._id = createId();
                 _users.push(_user);
                 toast.success('Usuário Criado');
             }
@@ -123,17 +125,17 @@ const UsersScreen = () => {
     }
 
     const deleteUser = () => {
-        let _users = users.filter(val => val.id !== user.id);
+        let _users = users.filter(val => val._id !== user._id);
         setUsers(_users);
         setDeleteUserDialog(false);
         setUser(emptyUser);
         toast.success('Usuário Excluido');
     }
 
-    const findIndexById = (id: string) => {
+    const findIndexById = (_id: string) => {
         let index = -1;
         for (let i = 0; i < users.length; i++) {
-            if (users[i].id === id) {
+            if (users[i]._id === _id) {
                 index = i;
                 break;
             }
@@ -143,12 +145,12 @@ const UsersScreen = () => {
     }
 
     const createId = () => {
-        let id = '';
+        let _id = '';
         let chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
         for (let i = 0; i < 5; i++) {
-            id += chars.charAt(Math.floor(Math.random() * chars.length));
+            _id += chars.charAt(Math.floor(Math.random() * chars.length));
         }
-        return id;
+        return _id;
     }
 
     const exportCSV = () => {
@@ -167,7 +169,7 @@ const UsersScreen = () => {
         toast.success('Usuários Excluidos');
     }
 
-    const onEmailChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    const onEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
         const val = (e.target && e.target.value) || '';
         let _user: User = {...user};
         _user.email = val;
@@ -183,11 +185,9 @@ const UsersScreen = () => {
         setUser(_user);
     }
 
-    const onRoleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-        const val = (e.target && e.target.value) || '';
-        let _user: User = {...user};
-        _user.role = val;
-
+    const onRoleChange = (e: any) => {
+        let _user = {...user};
+        _user['role'] = e.value;
         setUser(_user);
     }
 
@@ -249,6 +249,8 @@ const UsersScreen = () => {
                 <Column field="email" header="E-mail:" sortable style={{ minWidth: '16rem' }}></Column>
                 <Column field="name" header="Nome:" sortable style={{ minWidth: '16rem' }}></Column>
                 <Column field="role" header="Perfil:" sortable style={{ minWidth: '5rem' }}></Column>
+                <Column field="indStatus" header="Status:" sortable style={{ minWidth: '5rem' }}></Column>
+                <Column field="lastAccess" header="Últ.Acesso:" sortable style={{ minWidth: '11rem' }}></Column>
                 <Column field="createdAt" header="Dt.Criação:" sortable style={{ minWidth: '11rem' }} 
                                                                     body={dateCreatedBodyTemplate}></Column>
                 <Column field="updatedAt" header="Dt.Atualização:" sortable style={{ minWidth: '11rem' }}
@@ -259,7 +261,7 @@ const UsersScreen = () => {
             
             {isLoading && <Loader />}
 
-            <Dialog visible={userDialog} breakpoints={{'960px': '75vw', '640px': '100vw'}} style={{width: '40vw'}} header="Usuário Detalhes:" modal className="p-fluid" footer={userDialogFooter} onHide={hideDialog}>
+            <Dialog visible={userDialog} breakpoints={{'960px': '75vw', '640px': '100vw'}} style={{width: '40vw'}} header="Usuário Detalhe:" modal className="p-fluid" footer={userDialogFooter} onHide={hideDialog}>
                 <div className="field">
                     <label htmlFor="name">Nome:</label>
                     <InputText id="name" value={user.name} onChange={(e) => onNameChange(e)} required autoFocus className={classNames({ 'p-invalid': submitted && !user.name })} />
@@ -267,14 +269,19 @@ const UsersScreen = () => {
                 </div>
                 <div className="field">
                     <label htmlFor="email">E-mail:</label>
-                    <InputText id="email" value={user.email} onChange={(e) => onNameChange(e)} required autoFocus className={classNames({ 'p-invalid': submitted && !user.email })} />
+                    <InputText id="email" value={user.email} onChange={(e) => onEmailChange(e)} required autoFocus className={classNames({ 'p-invalid': submitted && !user.email })} />
                     {submitted && !user.email && <small className="p-error">E-mail é obrigatório.</small>}
                 </div>
-                <div className="field">
-                    <label htmlFor="role">Perfil:</label>
-                    <InputText id="role" value={user.role} onChange={(e) => onNameChange(e)} required autoFocus className={classNames({ 'p-invalid': submitted && !user.role })} />
-                    {submitted && !user.role && <small className="p-error">Perfil é obrigatório.</small>}
-                </div>
+
+                    <div className="formgrid grid">
+                        <label>Perfil:</label>
+                        <div className="field-radiobutton col-8">
+                            <RadioButton inputId="role1" name="role" value="ADMIN" onChange={(e) => onRoleChange(e)} checked={user.role === 'ADMIN'} />
+                            <label htmlFor="role1"> Administrador </label>
+                            <RadioButton inputId="role2" name="role" value="USER" onChange={(e) => onRoleChange(e)} checked={user.role === 'USER'} />
+                            <label htmlFor="role2"> Usuário</label>
+                        </div>
+                    </div>
 
             </Dialog>
 

@@ -43,6 +43,13 @@ export const userApiSlice = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    emailConfirm: builder.mutation({
+      query: (data) => ({
+        url: `${USERS_URL}/profile/email`,
+        method: 'PATCH',
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -53,4 +60,5 @@ export const {
   useUpdateUserMutation,
   useResetUserPasswordMutation,
   useQueryUsersMutation,
+  useEmailConfirmMutation,
 } = userApiSlice;

@@ -3,6 +3,7 @@ import User from '../models/userModel.js';
 import generateToken from '../utils/generateToken.js';
 import generator from 'generate-password';
 import sendEmailUtil from '../utils/sendEmailUtil.js';
+import moment from 'moment';
 
 // @desc    Auth user & get token
 // @route   POST /api/users/auth
@@ -11,15 +12,22 @@ const authUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
   const user = await User.findOne({ email });
-
+ 
   if (user && (await user.matchPassword(password))) {
     generateToken(res, user._id);
 
+    // Atualização do lastAccess ...
+    user.lastAccess = moment(new Date()).format('YYYY-MM-DD HH:mm:ss') + ' ' + 
+                                            user.lastAccess.substring(0, 19);
+    const userSave = await user.save();
+
     res.json({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      role: user.role,
+      _id: userSave._id,
+      name: userSave.name,
+      email: userSave.email,
+      role: userSave.role,
+      indStatus: userSave.indStatus,
+      lastAccess: userSave.lastAccess,
     });
   } else {
     res.status(401);
@@ -52,11 +60,23 @@ const registerUser = asyncHandler(async (req, res) => {
     throw new Error('Perfil não existe! = {$role}');
   }
 
+  var registerCode = generator.generate({
+    length: 5,
+    numbers: true
+  });
+  // 
+  var textEmail = '<h2>Controle Condomínio:</h2>' +
+                  '<h4>Código de confirmação de E-mail: ' + registerCode + '</h4>';
+
+  sendEmailUtil(res, email, 'Código confirmação E-mail.', textEmail);
+
   const user = await User.create({
     name,
     email,
     password,
     role,
+    indStatus: registerCode,
+    lastAccess,
   });
 
   if (user) {
@@ -67,6 +87,8 @@ const registerUser = asyncHandler(async (req, res) => {
       name: user.name,
       email: user.email,
       role: user.role,
+      indStatus: user.indStatus,
+      lastAccess: user.lastAccess,
     });
   } else {
     res.status(400);
@@ -110,6 +132,8 @@ const getUserProfile = asyncHandler(async (req, res) => {
       name: user.name,
       email: user.email,
       role: user.role,
+      indStatus: user.indStatus,
+      lastAccess: user.lastAccess,
     });
   } else {
     res.status(404);
@@ -133,6 +157,12 @@ const updateUserProfile = asyncHandler(async (req, res) => {
     if (req.body.role) {
       user.role = req.body.role;
     }
+    if (req.body.indStatus) {
+      user.indStatus = req.body.indStatus;
+    }
+    if (req.body.lastAccess) {
+      user.lastAccess = req.body.lastAccess;
+    }
 
     const updatedUser = await user.save();
 
@@ -141,6 +171,8 @@ const updateUserProfile = asyncHandler(async (req, res) => {
       name: updatedUser.name,
       email: updatedUser.email,
       role: updatedUser.role,
+      indStatus: updatedUser.indStatus,
+      lastAccess: updatedUser.lastAccess,
     });
   } else {
     res.status(404);
@@ -151,7 +183,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 // @desc    Patch reset user password
 // @route   PATCH /api/users/profile
 // @access  Private
-const resetUserPassword= asyncHandler(async (req, res) => {
+const resetUserPassword = asyncHandler(async (req, res) => {
   const { email } = req.body;
 
   const user = await User.findOne({ email });
@@ -180,6 +212,44 @@ const resetUserPassword= asyncHandler(async (req, res) => {
   }
 });
 
+// @desc    Patch reset user password
+// @route   PATCH /api/users/profile/email
+// @access  Private
+const emailConfirmProfile = asyncHandler(async (req, res) => {
+  //
+  const { email, codeEmail } = req.body;
+
+  const user = await User.findOne({ email });
+
+  if (user) {
+    //
+    if (codeEmail == 'ReSendEmailCode') {
+      var textEmail = '<h2>Controle Condomínio:</h2>' +
+        '<h4>Código de confirmação de E-mail: ' + user.indStatus + '</h4>';
+
+      sendEmailUtil(res, email, 'Código confirmação E-mail', textEmail);
+
+      res.status(200).json({ message: 'Código confirmação E-mail reenviado com sucesso'});
+    } else {
+      if (user.indStatus == codeEmail) {
+        //
+        user.indStatus = ' ';
+  
+        const updatedUser = await user.save();
+  
+        res.status(200).json({ message: 'E-mail validado com sucesso'});
+      } else {
+        res.status(404);
+        throw new Error('Código validação inválido');
+      }
+    }
+    //
+  } else {
+    res.status(404);
+    throw new Error('E-mail não encontrado');
+  }
+});
+
 export {
   authUser,
   registerUser,
@@ -188,4 +258,5 @@ export {
   getUserProfile,
   updateUserProfile,
   resetUserPassword,
+  emailConfirmProfile,
 };

@@ -7,6 +7,7 @@ import {
   getUserProfile,
   updateUserProfile,
   resetUserPassword,
+  emailConfirmProfile,
 } from '../controllers/userController.js';
 import { protect } from '../middleware/authMiddleware.js';
 
@@ -17,6 +18,8 @@ router.post('/auth', authUser);
 router.post('/logout', logoutUser);
 
 router.route('/').get(protect, getUsers);
+
+router.route('/profile/email').patch(emailConfirmProfile);
 
 router
   .route('/profile')

@@ -50,7 +50,7 @@ const RegisterScreen = () => {
 
   return (
     <FormContainer>
-      <h2 classname='text-center mb-4'>
+      <h2 className='text-center mb-4'>
         <FaSignOutAlt /> Criar Conta:
       </h2>
 

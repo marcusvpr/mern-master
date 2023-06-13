@@ -22,7 +22,11 @@ const LoginScreen = () => {
 
   useEffect(() => {
     if (userInfo) {
-      navigate('/dashboard');
+      if (userInfo.indStatus.length == 5) {
+        navigate('/emailConfirm');
+      } else {
+        navigate('/dashboard');
+      }
     }
   }, [navigate, userInfo]);
 
@@ -30,8 +34,9 @@ const LoginScreen = () => {
     e.preventDefault();
     try {
       const res = await login({ email, password }).unwrap();
+
       dispatch(setCredentials({ ...res }));
-      navigate('/dashboard');
+
     } catch (err) {
       toast.error(err?.data?.message || err.error);
     }

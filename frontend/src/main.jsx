@@ -21,6 +21,7 @@ import PasswordResetScreen from './screens/PasswordResetScreen.jsx';
 import ProfileScreen from './screens/ProfileScreen.jsx';
 import DashboardScreen from './screens/DashboardScreen.jsx';
 import UsersScreen from './screens/UsersScreen.tsx';
+import EmailConfirmScreen from './screens/EmailConfirmScreen.jsx';
 
 import PrivateRoute from './components/PrivateRoute.jsx';
 
@@ -37,6 +38,7 @@ const router = createBrowserRouter(
         <Route path='/dashboard' element={<DashboardScreen />} />
         <Route path='/profile' element={<ProfileScreen />} />
         <Route path='/users' element={<UsersScreen />} />
+        <Route path='/emailConfirm' element={<EmailConfirmScreen />} />
       </Route>
     </Route>
   )

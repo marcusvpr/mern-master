@@ -20,6 +20,14 @@ const userSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    indStatus: {
+      type: String,
+      required: true,
+    },
+    lastAccess: {
+      type: String,
+      required: true,
+    },
   },
   {
     timestamps: true,

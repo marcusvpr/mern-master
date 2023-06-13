@@ -3,14 +3,14 @@ import { FaExclamationCircle } from 'react-icons/fa';
 
 const AboutScreen = () => {
   return (
-    <div classname=' py-5'>
+    <div className=' py-5'>
       <Container className='d-flex justify-content-center'>
         <Card className='p-5 d-flex flex-column align-items-center hero-card bg-light w-75'>
           <h2 className='text-center mb-4'>
             <FaExclamationCircle /> Sobre o Controle de Condomínio:
           </h2>
 
-          <p classname='text-center mb-4'>
+          <p className='text-center mb-4'>
             Bem-vindo à página de informações, sobre o nosso sistema de controle de
             condomínio.
             <br/><br/>
@@ -20,7 +20,7 @@ const AboutScreen = () => {
             <br/><br/>
             Com as nossas ferramentas avançadas, você pode:
           </p>
-          <div classname='d-flex'>
+          <div className='d-flex'>
             <ul>
               <li>Registrar e gerenciar informações dos moradores, como dados de contato e informações de unidades ;</li>
               <li>Realizar reservas de áreas comuns, como salões de festas, quadras esportivas e churrasqueiras ;</li>
